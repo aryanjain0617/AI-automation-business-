@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Trading Business Architecture & Automation Playbook</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --border: #e2e8f0;
+            --accent-blue: #38bdf8;
+            --green-bg: #dcfce7;
+            --green-text: #15803d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: var(--slate-900);
+            line-height: 1.6;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            padding: 40px;
+        }
+
+        .masthead {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .masthead-title {
+            font-size: 24pt;
+            font-weight: 800;
+            color: var(--slate-900);
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .masthead-subtitle {
+            font-size: 11pt;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 6px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--slate-900);
+            border-left: 4px solid var(--primary);
+            padding-left: 12px;
+            margin: 32px 0 16px 0;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 11pt;
+            color: var(--slate-700);
+            margin-bottom: 16px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            background: var(--slate-50);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 10.5pt;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            font-size: 10pt;
+            line-height: 1.5;
+            color: var(--slate-600);
+        }
+
+        .stat-banner {
+            background: var(--slate-900);
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 8.5pt;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-top: 4px;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+            background: #ffffff;
+        }
+
+        th {
+            background: var(--slate-100);
+            color: var(--slate-900);
+            font-weight: 700;
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid #cbd5e1;
+            font-size: 9pt;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--slate-700);
+        }
+
+        .badge-green {
+            background: var(--green-bg);
+            color: var(--green-text);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 8pt;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9pt;
+            color: var(--slate-500);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .masthead-title {
+                font-size: 18pt;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="masthead">
+            <h1 class="masthead-title">Solo Trading Business Operating Model</h1>
+            <div class="masthead-subtitle">Zero-Employee Business Architecture & Automation Playbook</div>
+        </header>
+
+        <p>This operational framework outlines how a solo trader can manage capital, strategy execution, risk
+            management, and regulatory tax compliance without requiring administrative staff, marketing, or a Chartered
+            Accountant for routine filings.</p>
+
+        <!-- Pillar Stack -->
+        <h2>1. Core Business Pillar Stack</h2>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">1. Strategy & Backtesting</div>
+                <div class="card-body"><strong>Engine: Streak (Zerodha)</strong><br>Automates technical strategy logic,
+                    entry/exit indicators, and dynamic Stop Loss / Trailing Stop Loss triggers.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">2. Options Analytics</div>
+                <div class="card-body"><strong>Engine: Sensibull</strong><br>Calculates real-time Greeks, Open Interest
+                    (OI) analysis, multi-leg payoff diagrams, and delta-neutral hedging setups.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">3. Fundamental Research</div>
+                <div class="card-body"><strong>Engine: Tijori Finance</strong><br>Provides granular sector exposure,
+                    balance sheet deep-dives, supply chain mapping, and operational metrics.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">4. Automated Tax & Compliance</div>
+                <div class="card-body"><strong>Engine: Quicko (API Integration)</strong><br>Direct broker-to-tax sync
+                    fetching trade books, salary AIS data, and auto-populating ITR-3 without Tally.</div>
+            </div>
+        </div>
+
+        <!-- Key Metrics Banner -->
+        <div class="stat-banner">
+            <div>
+                <div class="stat-label">Tax Audit Threshold</div>
+                <div class="stat-value">₹10 Crore Turnover</div>
+            </div>
+            <div>
+                <div class="stat-label">Tax Liability Ceiling</div>
+                <div class="stat-value">₹12 Lakhs Income (₹0 Tax)</div>
+            </div>
+            <div>
+                <div class="stat-label">Required Staff</div>
+                <div class="stat-value">0 Persons</div>
+            </div>
+        </div>
+
+        <!-- Department Breakdown -->
+        <h2>2. Departmental Elimination Analysis</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Department</th>
+                        <th>Traditional Business</th>
+                        <th>Solo Trading Business Solution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Human Resources</strong></td>
+                        <td>Recruitment, Payroll, Admin</td>
+                        <td><span class="badge-green">ELIMINATED</span> Fully systemized software execution.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Marketing & Sales</strong></td>
+                        <td>Client Acquisition, Ads</td>
+                        <td><span class="badge-green">ELIMINATED</span> Liquidity provided directly by exchanges.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accounting & Tally</strong></td>
+                        <td>Manual Voucher Entries</td>
+                        <td><span class="badge-green">AUTOMATED</span> Direct Zerodha API sync to Quicko engine.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Trade Execution</strong></td>
+                        <td>Floor Execution / Manual</td>
+                        <td><span class="badge-green">SEMI-AUTOMATED</span> One-click trigger approvals via Streak.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Tax Rules -->
+        <h2>3. Regulatory Provisions & Audit Rules</h2>
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title">Section 44AB (Tax Audit Rule)</div>
+                <div class="card-body">Because 100% of Zerodha transactions take place digitally via banking channels,
+                    the mandatory tax audit threshold is <strong>₹10 Crore Turnover</strong>. No CA audit is legally
+                    required below this level.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">Section 87A (New Tax Regime)</div>
+                <div class="card-body">Total taxable income (Salary + Net Trading Profits) up to
+                    <strong>₹12,00,000</strong> receives a full rebate under the New Tax Regime, resulting in <strong>₹0
+                        net tax payable</strong>.
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Table -->
+        <h2>4. Annual 15-Minute Weekend Workflow</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Action Item</th>
+                        <th>Time Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Step 1</strong></td>
+                        <td>Log in to Quicko using Zerodha Kite credentials (Auto-syncs trades & MF).</td>
+                        <td>3 Minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 2</strong></td>
+                        <td>Connect ITD Account via Aadhaar OTP (Auto-fetches Form 16 & AIS data).</td>
+                        <td>3 Minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 3</strong></td>
+                        <td>Upload CAMS / KFintech statement for non-Zerodha HDFC Mutual Funds (if any).</td>
+                        <td>2 Minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 4</strong></td>
+                        <td>Input 31st March closing bank balance & Zerodha ledger balance ("No Accounts Case").</td>
+                        <td>2 Minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Step 5</strong></td>
+                        <td>Select New Tax Regime, review ₹0 tax computation, and e-file ITR-3 via Aadhaar OTP.</td>
+                        <td>3 Minutes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Executive Summary -->
+        <h2>5. Executive Summary: The Chief Risk Officer Role</h2>
+        <p>With all administrative, sales, accounting, and tax filing tasks fully automated through technology, your
+            sole ongoing operational responsibility is serving as the <strong>Chief Risk Officer</strong>—monitoring
+            strategy drift, managing total portfolio drawdowns, and approving execution notifications.</p>
+
+        <!-- Footer -->
+        <footer>
+            <span>Solo Trading Business Architecture & Playbook</span>
+            <span>Hosted on GitHub Pages</span>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
